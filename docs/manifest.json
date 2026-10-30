@@ -1,5 +1,5 @@
 {
   "readme": true,
-  "features": ["docs/features/owned-repositories.md"],
+  "features": ["docs/features/owned-repositories.md", "docs/features/agent-access.md"],
   "diagrams": ["docs/architecture.md", "docs/fleet-architecture.md"]
 }

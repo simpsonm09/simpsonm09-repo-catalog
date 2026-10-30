@@ -18,7 +18,8 @@ This repository holds only the intent that GitHub cannot report.
 - `owned-forks.json` records personally owned forks and their upstream repositories.
 - `owned-repositories.json` records exact personal repository identities without upstreams.
 - `policy.md` describes the tiers and the expectations.
-- `scripts/validate.mjs` validates both owned-target policies locally, then checks the roster against the organization.
+- `scripts/catalog-policy.mjs` validates access defaults, overrides, and ignore identities offline.
+- `scripts/validate.mjs` validates local policy, then checks the roster against the organization.
 
 ## Quick start
 
@@ -35,6 +36,7 @@ just verify
 | `just lint` | Runs the linters. |
 | `just test` | Validates the roster against the organization. |
 | `just test-policy` | Runs local owned-target policy tests without querying GitHub. |
+| `just test-catalog-policy` | Runs catalog policy unit tests without querying GitHub. |
 | `just verify` | Lints and tests. |
 
 ## Documentation

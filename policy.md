@@ -37,38 +37,46 @@ so a new repository cannot appear unnoticed.
 
 ## Agent access
 
-Each repository states how much an AI agent may do against the organization
-repository. The value is intent. GitHub has no such setting, and enforcement lives in
-[`repo-standard`](https://github.com/simpsonm09-org/simpsonm09-repo-standard), not
-here. Until an agent runs as an identity separate from the maintainer, the value is a
-documented policy, not a control.
+Each repository states the intended level for AI agent work against the organization
+repository. This catalog is policy data; it does not activate a runtime grant. The
+resolver and plugin integration must be reviewed and ready before this catalog change
+is merged or applied.
 
 `repos.json` sets a default per tier in `agentAccessDefaults`, and a repository may
-override it with `agentAccess`. The effective level is `agentAccess` when present,
-otherwise the tier default.
+override it with `agentAccess`. All eight tier defaults and all 17 current fleet
+repositories are `full`. An override, when present, must be one of the selectable
+levels below. `read` is the internal baseline for destinations without a grant; it is
+not selectable. A roster repository's effective level is its explicit `agentAccess`
+override when present, otherwise its tier default. An identity in `agentAccessIgnore`
+overrides any tier default or roster grant and receives no writes. Unknown organization
+targets and owned targets without a separate authorization receive no writes. Separately
+authorized owned-fork and owned-repository policies continue to use their own rules.
+Deny is a separate identity rule, not a level.
 
-| Level | Agent may | Mechanism once enforced |
+| Level | Agent may | Review and enforcement intent |
 | --- | --- | --- |
-| `none` | Nothing. No credential reaches the organization repository. | No identity grant. |
-| `read` | Clone, fetch, read. | No agent App installation. The standard gives `none` and `read` no installation. |
-| `propose` | Push a branch and open a pull request, never merge. | Write access, the agent absent from the ruleset bypass list, and at least one required approval the agent cannot give. |
-| `merge` | Merge its own green pull requests, with no direct push to `main`. | The agent in the bypass list with mode `pull_request`. |
-| `full` | Push to `main` or change settings. | The agent in the bypass list with mode `always`. The agent App requests no `administration` permission, so it cannot change settings or rulesets. |
+| `propose` | Manage branches and pull requests, create issues, and request review. No merge. | One human review is required. A repository administrator may bypass only that approval requirement for a pull request. |
+| `merge` | Everything in `propose`, plus normal pull request merges. | One human review is required. A repository administrator may bypass only that approval requirement for a pull request. |
+| `full` | Full fleet access, including milestone and administrative actions. Pull requests use GitHub's native merge path, with required checks and signatures enforced. | Checks-only native merge; no agent App bypass. `@simpsonm09` CODEOWNER approval is optional. |
 
-`propose` needs at least one required approval that the agent cannot give. The
-standard's committed [`protect-main.json`](https://github.com/simpsonm09-org/simpsonm09-repo-standard/blob/main/rulesets/protect-main.json)
-sets `required_approving_review_count` to `1`. Its only bypass actor is
-`OrganizationAdmin` in `pull_request` mode. This describes the committed file, not
-the live GitHub ruleset, which this catalog does not read. The agent App's bypass
-entry is not in that file. The standard's
-[`governance guide`](https://github.com/simpsonm09-org/simpsonm09-repo-standard/blob/main/docs/governance.md)
-and its [`agent-access guide`](https://github.com/simpsonm09-org/simpsonm09-repo-standard/blob/main/docs/features/agent-access.md)
-describe the App and the drift check.
+At `full`, this checks-only approval rule also applies when a pull request changes CI workflows, security scans, or permission rules; no human-review exception applies.
 
-The fleet agent's GitHub App entry on each repository's `protect-main` ruleset follows the
-standard's [bypass actors table](https://github.com/simpsonm09-org/simpsonm09-repo-standard/blob/main/docs/governance.md#bypass-actors).
-It is absent for `none`, `read`, and `propose`, mode `pull_request` for `merge`, and mode
-`always` for `full`. No actor id is recorded here.
+Required CI checks and signed commits remain hard requirements at every level. The
+approval-only administrator bypass does not bypass either requirement. The catalog
+does not record live ruleset state or guarantee that the policy is active.
+
+### Explicit agent-access ignores
+
+Three existing entries in `ignore.json` carry `agentAccessIgnore`: the archived capstone,
+`pdf_field_automation_acrobat`, and `steam_wishlist_cleanup`. Each lists the exact
+`simpsonm09/<repository>` and `simpsonm09-org/<repository>` identities. Matching is
+case-insensitive and requires both owner and repository name to match. Other ignore
+entries remain inventory-only. The pure catalog validator checks the shape offline;
+organization roster reconciliation remains a live CLI check.
+
+This identity list defines policy intent. It is not a universal deny sandbox: tools or
+paths outside the integrated resolver may not consult it. No rollout or activation is
+claimed by this source change.
 
 ## Personally owned forks
 
@@ -115,14 +123,14 @@ The tier defaults.
 
 | Tier | Default |
 | --- | --- |
-| `standard` | `merge` |
-| `template` | `merge` |
-| `catalog` | `merge` |
-| `plugin` | `merge` |
-| `tooling` | `merge` |
-| `feature` | `merge` |
-| `fixture` | `read` |
-| `legacy` | `none` |
+| `standard` | `full` |
+| `template` | `full` |
+| `catalog` | `full` |
+| `plugin` | `full` |
+| `tooling` | `full` |
+| `feature` | `full` |
+| `fixture` | `full` |
+| `legacy` | `full` |
 
 ## What does not belong here
 
