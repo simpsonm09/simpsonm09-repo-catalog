@@ -27,9 +27,13 @@ aislop:
 test:
     mise run test
 
-# Run local owned-target policy tests without querying GitHub.
+# Run catalog and owned-target policy tests without querying GitHub.
 test-policy:
-    node --test test/owned-forks.test.mjs test/owned-repositories.test.mjs
+    node --test test/catalog-policy.test.mjs test/owned-forks.test.mjs test/owned-repositories.test.mjs
+
+# Run catalog policy unit tests without querying GitHub.
+test-catalog-policy:
+    node --test test/catalog-policy.test.mjs
 
 # Lint and test.
 verify: lint test

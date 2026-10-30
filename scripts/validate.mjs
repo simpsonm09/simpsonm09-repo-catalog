@@ -5,11 +5,9 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateOwnedForks } from './owned-forks.mjs';
 import { validateOwnedRepositories } from './owned-repositories.mjs';
+import { LEVELS, TIERS, validateCatalogPolicy } from './catalog-policy.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-
-const TIERS = ['standard', 'template', 'catalog', 'plugin', 'tooling', 'feature', 'fixture', 'legacy'];
-const LEVELS = ['none', 'read', 'propose', 'merge', 'full'];
 
 function readJson(name) {
   return JSON.parse(readFileSync(join(ROOT, name), 'utf8'));
@@ -25,9 +23,10 @@ const ignore = readJson('ignore.json');
 const ownedForks = readJson('owned-forks.json');
 const ownedRepositories = readJson('owned-repositories.json');
 const org = roster.org;
+const catalogErrors = validateCatalogPolicy(roster, ignore);
 const ownedForkErrors = validateOwnedForks(ownedForks);
 const ownedRepositoryErrors = validateOwnedRepositories(ownedRepositories, ownedForks);
-const policyErrors = [...ownedForkErrors, ...ownedRepositoryErrors];
+const policyErrors = [...catalogErrors, ...ownedForkErrors, ...ownedRepositoryErrors];
 if (policyErrors.length > 0) {
   for (const error of policyErrors) process.stderr.write(`validate: ${error}\n`);
   process.exit(1);
@@ -61,22 +60,10 @@ for (const entry of live) {
   }
 }
 
-const defaults = roster.agentAccessDefaults ?? {};
-for (const tier of TIERS) {
-  if (!(tier in defaults)) errors.push(`agentAccessDefaults is missing the ${tier} tier`);
-}
-for (const [tier, level] of Object.entries(defaults)) {
-  if (!TIERS.includes(tier)) errors.push(`agentAccessDefaults has an unknown tier: ${tier}`);
-  if (!LEVELS.includes(level)) errors.push(`agentAccessDefaults.${tier} is not a level: ${level}`);
-}
-
 const levelCounts = new Map();
 for (const entry of roster.repos) {
   if (!TIERS.includes(entry.tier)) errors.push(`${entry.name} has an unknown tier: ${entry.tier}`);
-  if (entry.agentAccess !== undefined && !LEVELS.includes(entry.agentAccess)) {
-    errors.push(`${entry.name} has an unknown agentAccess: ${entry.agentAccess}`);
-  }
-  const level = entry.agentAccess ?? defaults[entry.tier];
+  const level = entry.agentAccess ?? roster.agentAccessDefaults[entry.tier];
   if (LEVELS.includes(level)) levelCounts.set(level, (levelCounts.get(level) ?? 0) + 1);
 }
 
