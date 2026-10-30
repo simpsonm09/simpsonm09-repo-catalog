@@ -29,7 +29,7 @@ test:
 
 # Run local owned-target policy tests without querying GitHub.
 test-policy:
-    node --test test/owned-forks.test.mjs test/owned-repositories.test.mjs
+    node --test test/owned-forks.test.mjs test/owned-repositories.test.mjs test/export-autoqueue-roster.test.mjs
 
 # Lint and test.
 verify: lint test
