@@ -2,7 +2,11 @@
   "ignore": [
     {
       "name": "The_Gaming_Index_Video_Game_Database_Final_Capstone",
-      "reason": "Archived capstone project, outside the fleet."
+      "reason": "Archived capstone project, outside the fleet.",
+      "agentAccessIgnore": [
+        "simpsonm09/The_Gaming_Index_Video_Game_Database_Final_Capstone",
+        "simpsonm09-org/The_Gaming_Index_Video_Game_Database_Final_Capstone"
+      ]
     },
     {
       "name": "pstack-opencode-plugin",
@@ -10,11 +14,19 @@
     },
     {
       "name": "pdf_field_automation_acrobat",
-      "reason": "Legacy public repository that predates the standard."
+      "reason": "Legacy public repository that predates the standard.",
+      "agentAccessIgnore": [
+        "simpsonm09/pdf_field_automation_acrobat",
+        "simpsonm09-org/pdf_field_automation_acrobat"
+      ]
     },
     {
       "name": "steam_wishlist_cleanup",
-      "reason": "Legacy public repository that predates the standard."
+      "reason": "Legacy public repository that predates the standard.",
+      "agentAccessIgnore": [
+        "simpsonm09/steam_wishlist_cleanup",
+        "simpsonm09-org/steam_wishlist_cleanup"
+      ]
     },
     {
       "name": ".github",

@@ -1,14 +1,14 @@
 {
   "org": "simpsonm09-org",
   "agentAccessDefaults": {
-    "standard": "merge",
-    "template": "merge",
-    "catalog": "merge",
-    "plugin": "merge",
-    "tooling": "merge",
-    "feature": "merge",
-    "fixture": "read",
-    "legacy": "none"
+    "standard": "full",
+    "template": "full",
+    "catalog": "full",
+    "plugin": "full",
+    "tooling": "full",
+    "feature": "full",
+    "fixture": "full",
+    "legacy": "full"
   },
   "repos": [
     {
@@ -93,29 +93,25 @@
       "name": "simpsonm09-fixture-nest",
       "tier": "fixture",
       "adopted": true,
-      "agentAccess": "propose",
-      "rationale": "NestJS item CRUD fixture; validates the propose level."
+      "rationale": "NestJS item CRUD fixture; validates the NestJS workflow."
     },
     {
       "name": "simpsonm09-fixture-go",
       "tier": "fixture",
       "adopted": true,
-      "agentAccess": "full",
-      "rationale": "Go item CRUD fixture; validates the full level."
+      "rationale": "Go item CRUD fixture; validates the Go workflow."
     },
     {
       "name": "simpsonm09-fixture-rust",
       "tier": "fixture",
       "adopted": true,
-      "agentAccess": "merge",
-      "rationale": "Rust item CRUD fixture; validates the merge level."
+      "rationale": "Rust item CRUD fixture; validates the Rust workflow."
     },
     {
       "name": "simpsonm09-fixture-dotnet",
       "tier": "fixture",
       "adopted": true,
-      "agentAccess": "read",
-      "rationale": "C# item CRUD fixture; validates the read level."
+      "rationale": "C# item CRUD fixture; validates the .NET workflow."
     }
   ]
 }

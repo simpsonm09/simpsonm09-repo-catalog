@@ -185,7 +185,7 @@ The three reference repositories describe the fleet. They do not run it.
 
 The catalog holds intent, and the standard holds checks. Each repository runs the checks against itself in its own CI. No repository audits another.
 
-Agent access is one value per repository: `none`, `read`, `propose`, `merge`, or `full`. The catalog sets a default per tier, and a repository may override it. The org layer's gate reads the level and applies it to each tool call in every harness that can run a pre-tool hook. See [`policy.md`](../policy.md).
+Agent access is one selectable value per repository: `propose`, `merge`, or `full`. All eight tier defaults and all 17 current fleet repositories declare `full`; `read` is an internal baseline, and deny is identity-based. The policy is not active until the resolver and plugin integration are ready. See [`policy.md`](../policy.md) and the [agent-access change note](features/agent-access.md).
 
 ## Feature
 
@@ -194,7 +194,7 @@ Every repository outside the three groups above is a feature repository. It cons
 | Kind | Repositories | Note |
 | --- | --- | --- |
 | Feature | `simpsonm09-browser-calculator`, `simpsonm09-postman-test-utils`, `simpsonm09-playwright-api-wrapper`, `simpsonm09-pokeapi-wrapper`, `simpsonm09-openclaw-homelab` | Products. |
-| Fixture | `simpsonm09-fixture-nest`, `simpsonm09-fixture-go`, `simpsonm09-fixture-rust`, `simpsonm09-fixture-dotnet` | One each for the `read`, `propose`, `merge`, and `full` levels. They validate the framework and are not products. |
+| Fixture | `simpsonm09-fixture-nest`, `simpsonm09-fixture-go`, `simpsonm09-fixture-rust`, `simpsonm09-fixture-dotnet` | Language fixtures that validate the framework and are not products. |
 | Tooling data | `simpsonm09-machine-inventory` | Read by the org layer. |
 | Third-party forks | `t3code`, `cursor-plugins`, `Win-CodexBar` | Kept for reference and local patches. Outside the roster, and never a pull request target upstream. |
 

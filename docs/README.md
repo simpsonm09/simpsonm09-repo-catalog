@@ -18,4 +18,5 @@ Index for the catalog.
 
 ## Features
 
+- [Agent access](features/agent-access.md) records the reviewed full-default and explicit-ignore policy intent.
 - [Owned repositories](features/owned-repositories.md) describes the standalone owned-repository policy.
