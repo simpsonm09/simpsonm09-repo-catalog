@@ -52,9 +52,12 @@ otherwise the tier default.
 | `merge` | Merge its own green pull requests, with no direct push to `main`. | The agent in the bypass list with mode `pull_request`. |
 | `full` | Push to `main` or change settings. | Bypass mode `always`, or an admin role. |
 
-`propose` is only real when `required_approving_review_count` is at least `1`. The
-`protect-main` ruleset sets it to `0` today for the solo maintainer, so making
-`propose` meaningful is a `repo-standard` change.
+`propose` needs at least one required approval that the agent cannot give. The
+standard's committed [`protect-main.json`](https://github.com/simpsonm09-org/simpsonm09-repo-standard/blob/main/rulesets/protect-main.json)
+sets `required_approving_review_count` to `1`. This describes the committed policy,
+not the live GitHub ruleset. A separate agent identity and the correct bypass mode
+are still needed to enforce the level. See the standard's
+[`governance guide`](https://github.com/simpsonm09-org/simpsonm09-repo-standard/blob/main/docs/governance.md).
 
 The tier defaults.
 

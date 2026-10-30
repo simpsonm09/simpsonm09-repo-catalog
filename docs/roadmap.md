@@ -21,6 +21,8 @@ GitHub; this page holds goals and open work.
 - Dependabot as the single updater.
 - Kotlin and Java in the shared lint table, so a JVM repository lints through the same job.
 - A generated-OpenAPI contract rule: an API repository emits its document from annotations, and the checker fails a hand edit or a missing `spec` recipe.
+- The standard's committed `protect-main.json` requires one approval. Live ruleset
+  deployment is not recorded here.
 
 ## Open
 
@@ -33,11 +35,13 @@ GitHub; this page holds goals and open work.
 - Releases. Adopt the release workflow and a changelog for the artifacts that publish.
 - Plugin identifiers. Align the OpenCode plugin ids with the repository names.
 - Agent access. Enforce the per-repository levels in `repo-standard` with a dedicated
-  agent identity, ruleset bypass modes, and the required approval that makes `propose`
-  real.
+  agent identity and the correct ruleset bypass modes. The committed approval
+  requirement is in place; live deployment and identity enforcement need verification.
 
 ## How open work lands
 
 The standard changes in `simpsonm09-repo-standard` first, then roll out to the fleet
 through same-repo pull requests on the organization. Each wave ends in a verified state,
-checked with `check-repo` on every repository.
+checked by each repository's own `check-repo` job. A maintainer may also run the
+standard's local `audit-fleet` over sibling checkouts. This local audit does not run
+in a consuming repository's CI and does not query another repository through the API.

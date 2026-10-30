@@ -14,7 +14,7 @@ function readJson(name) {
 }
 
 function listOrgRepos(org) {
-  const out = execFileSync('gh', ['repo', 'list', org, '--limit', '200', '--json', 'name,isArchived'], { encoding: 'utf8' });
+  const out = execFileSync('gh', ['repo', 'list', org, '--limit', '200', '--json', 'name,isArchived'], { windowsHide: true, encoding: 'utf8' });
   return JSON.parse(out);
 }
 
